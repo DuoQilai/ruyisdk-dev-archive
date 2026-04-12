@@ -80,7 +80,7 @@ cmake .. \
 cmake --build . -j$(nproc)
 ```
 
-## **三、运行 GStreamer示例 **
+## 三、运行 GStreamer示例 
 
 #### 运行 basic-tutorial-1
 
