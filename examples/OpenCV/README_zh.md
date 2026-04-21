@@ -31,7 +31,7 @@ profile: sipeed-lpi4a-opencv
   ```
 
 
-## LicheePi 4A Dhrystone 基准测试
+## LicheePi 4A OpenCV图像处理测试
 
 - #### 示例描述和硬件环境准备
 
