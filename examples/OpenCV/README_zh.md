@@ -178,5 +178,5 @@ profile: sipeed-lpi4a-opencv
      ```c#
      Success! Image saved as test_output.jpg
      ```
-
+     ![test.png](https://github.com/zhiyao310/ruyisdk-dev-archive/blob/main/examples/OpenCV/test.png)
      
