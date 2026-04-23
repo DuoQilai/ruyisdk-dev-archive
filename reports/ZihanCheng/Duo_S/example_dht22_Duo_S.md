@@ -180,6 +180,8 @@ file dht22
 
 ### 5.传输并运行
 
+默认用户名：`root`，默认密码：`milkv`
+
 ```bash
 
 # 传输到开发板
@@ -202,7 +204,7 @@ duo-pinmux -w B15/B15
 
 运行后，终端持续输出温湿度数据：
 
-```bash
+```
 
 Humidity = 51.50 % Temperature = 27.30 *C
 Humidity = 51.60 % Temperature = 27.30 *C
