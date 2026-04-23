@@ -41,6 +41,8 @@ ruyi update
 
 ruyi install gnu-plct llvm-plct
 
+ruyi install gnu-milkv-milkv-duo-musl-bin
+
 ```
 
 ## DHT22 温湿度传感器测试
@@ -90,7 +92,7 @@ ruyi install gnu-plct llvm-plct
 
 ![接线图 2](https://github.com/ZihanCheng63/my-repo/blob/main/image-2026041702.png)
 
-### 3. 获取源码并配置环境
+### 3. 获取源码
 
 #### 克隆源码
 
@@ -102,43 +104,13 @@ cd duo-examples
 
 ```
 
-#### 配置编译环境
-
-```bash
-
-source envsetup.sh
-
-```
-
 ### 4. 编译应用与验证
 
-#### 修改 Makefile
+#### 修改源码
 
 ```bash
 
 cd dht22
-
-nano Makefile
-
-```
-
-修改以下内容：
-
-```bash
-
-# 在 CC = $(TOOLCHAIN_PREFIX)gcc 下添加：
-
-CFLAGS += -I../wiringX/src
-
-LDFLAGS += -L../libs/system/musl_riscv64 -lwiringx
-
-```
-
-保存并退出。
-
-#### 修改 dht.c
-
-```bash
 
 nano dht.c
 
@@ -160,11 +132,25 @@ if (wiringXSetup("milkv_duos", NULL) == -1)
 
 保存并退出。
 
-#### 编译程序
+#### 创建虚拟环境
+
+```
+
+cd ~/duo-examples
+
+ruyi venv -t gnu-milkv-milkv-duo-musl-bin generic ./ruyi_venv
+
+source ruyi_venv/bin/ruyi-activate
+
+```
+
+#### 编译 DHT22 程序
 
 ```bash
 
-make
+cd dht22
+
+riscv64-unknown-linux-musl-gcc -o dht22 dht.c -I../include -I../wiringX/src -L../libs/system/musl_riscv64 -lwiringx
 
 ```
 
@@ -175,6 +161,14 @@ make
 ```bash
 
 file dht22
+
+```
+
+#### 退出虚拟环境
+
+```bash
+
+ruyi-deactivate
 
 ```
 
@@ -204,7 +198,7 @@ duo-pinmux -w B15/B15
 
 运行后，终端持续输出温湿度数据：
 
-```
+```bash
 
 Humidity = 51.50 % Temperature = 27.30 *C
 Humidity = 51.60 % Temperature = 27.30 *C
@@ -212,6 +206,7 @@ Humidity = 51.20 % Temperature = 27.30 *C
 Humidity = 51.10 % Temperature = 27.30 *C
 Humidity = 51.20 % Temperature = 27.30 *C
 Humidity = 51.40 % Temperature = 27.30 *C
+
 ...
 
 ```
