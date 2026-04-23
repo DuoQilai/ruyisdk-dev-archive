@@ -41,6 +41,8 @@ ruyi update
 
 ruyi install gnu-plct llvm-plct
 
+ruyi install gnu-milkv-milkv-duo-musl-bin
+
 ```
 
 ## ADC 芯片功能测试
@@ -59,7 +61,7 @@ ruyi install gnu-plct llvm-plct
 
 参考文档：https://milkv.io/zh/docs/duo/getting-started/boot
 
-### 2. 获取源码并配置环境
+### 2. 获取源码
 
 #### 克隆源码
 
@@ -71,23 +73,25 @@ cd duo-examples
 
 ```
 
-#### 配置编译环境
+### 3. 编译应用与验证
+
+#### 创建虚拟环境
 
 ```bash
 
-source envsetup.sh
+ruyi venv -t gnu-milkv-milkv-duo-musl-bin generic ./ruyi_venv
+
+source ruyi_venv/bin/ruyi-activate
 
 ```
 
-### 3. 编译应用与验证
-
-#### 编译程序
+#### 编译 ADC 程序
 
 ```bash
 
 cd adc
 
-make
+riscv64-unknown-linux-musl-gcc -o adcRead adcRead.c
 
 ```
 
@@ -98,6 +102,14 @@ make
 ```bash
 
 file adcRead
+
+```
+
+#### 退出虚拟环境
+
+```bash
+
+ruyi-deactivate
 
 ```
 
