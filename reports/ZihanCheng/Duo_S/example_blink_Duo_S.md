@@ -92,9 +92,7 @@ source ruyi_venv/bin/ruyi-activate
 cd blink
 
 riscv64-unknown-linux-musl-gcc -o blink blink.c \
-
   -I../include -I../wiringX/src \
-
   -L../libs/system/musl_riscv64 -lwiringx
 
 ```
@@ -137,7 +135,7 @@ ssh root@192.168.42.1
 
 运行 blink 程序前，需要先禁用系统自带的 LED 闪烁脚本，避免冲突：
 
-```bash
+```
 
 mv /mnt/system/blink.sh /mnt/system/blink.sh_backup && sync
 
@@ -183,7 +181,7 @@ Duo LED GPIO (wiringX) 25: Low
 
 测试完成后，如需恢复系统默认 LED 闪烁：
 
-```bash
+```
 
 ssh root@192.168.42.1
 
