@@ -1,7 +1,7 @@
 ---
 sys: RuyiSDK
 sys_ver: 0.46.0
-sys_var: Buildroot
+sys_var: Debian
 provider: milkv
 status: PASS
 last_update: 2026-04-17
@@ -41,8 +41,6 @@ ruyi update
 
 ruyi install gnu-plct llvm-plct
 
-ruyi install gnu-milkv-milkv-duo-musl-bin
-
 ```
 
 ## DHT22 温湿度传感器测试
@@ -59,9 +57,9 @@ ruyi install gnu-milkv-milkv-duo-musl-bin
 
 #### 操作系统安装与启动验证
 
-确保您的开发板已刷入 RuyiSDK 支持的 Buildroot 系统镜像。
+确保您的开发板已准备好系统。
 
-参考文档：https://milkv.io/zh/docs/duo/getting-started/boot
+参考文档：https://github.com/DuoQilai/riscv-board-custom-dev/blob/main/Duo_S/boot_DuoS.md
 
 ### 2. 硬件连接
 
@@ -118,7 +116,7 @@ nano dht.c
 
 修改以下两处内容：
 
-```
+```bash
 
 # 1. 将引脚号改为 23（对应物理引脚 B15）
 
@@ -134,13 +132,21 @@ if (wiringXSetup("milkv_duos", NULL) == -1)
 
 #### 创建虚拟环境
 
-```
+```bash
 
 cd ~/duo-examples
 
-ruyi venv -t gnu-milkv-milkv-duo-musl-bin generic ./ruyi_venv
+ruyi venv -t toolchain/gnu-plct manual venv-gnu-plct
 
-source ruyi_venv/bin/ruyi-activate
+. ~/venv-gnu-plct/bin/ruyi-activate
+
+```
+
+#### 验证工具链版本
+
+```bash
+
+riscv64-plct-linux-gnu-gcc -v
 
 ```
 
@@ -150,7 +156,11 @@ source ruyi_venv/bin/ruyi-activate
 
 cd dht22
 
-riscv64-unknown-linux-musl-gcc -o dht22 dht.c -I../include -I../wiringX/src -L../libs/system/musl_riscv64 -lwiringx
+riscv64-plct-linux-gnu-gcc dht.c -o dht22 \
+    -I../include \
+    -I../wiringX/src \
+    -L../libs/system/musl_riscv64 \
+    -lwiringx
 
 ```
 
@@ -161,14 +171,6 @@ riscv64-unknown-linux-musl-gcc -o dht22 dht.c -I../include -I../wiringX/src -L..
 ```bash
 
 file dht22
-
-```
-
-#### 退出虚拟环境
-
-```bash
-
-ruyi-deactivate
 
 ```
 
