@@ -1,7 +1,7 @@
 ---
 sys: RuyiSDK
 sys_ver: 0.46.0
-sys_var: Buildroot
+sys_var: Debian
 provider: milkv
 status: PASS
 last_update: 2026-04-09
@@ -41,8 +41,6 @@ ruyi update
 
 ruyi install gnu-plct llvm-plct
 
-ruyi install gnu-milkv-milkv-duo-musl-bin
-
 ```
 
 ## LED 闪烁控制测试
@@ -57,9 +55,9 @@ ruyi install gnu-milkv-milkv-duo-musl-bin
 
 #### 操作系统安装与启动验证
 
-确保您的开发板已刷入 RuyiSDK 支持的 Buildroot 系统镜像。
+确保您的开发板已准备好系统。
 
-参考文档：https://milkv.io/zh/docs/duo/getting-started/boot
+参考文档：https://github.com/DuoQilai/riscv-board-custom-dev/blob/main/Duo_S/boot_DuoS.md
 
 ### 2. 获取源码
 
@@ -79,9 +77,17 @@ cd duo-examples
 
 ```bash
 
-ruyi venv -t gnu-milkv-milkv-duo-musl-bin generic ./ruyi_venv
+ruyi venv -t toolchain/gnu-plct manual venv-gnu-plct
 
-source ruyi_venv/bin/ruyi-activate
+. ~/venv-gnu-plct/bin/ruyi-activate
+
+```
+
+#### 验证工具链版本
+
+```bash
+
+riscv64-plct-linux-gnu-gcc -v
 
 ```
 
@@ -91,9 +97,11 @@ source ruyi_venv/bin/ruyi-activate
 
 cd blink
 
-riscv64-unknown-linux-musl-gcc -o blink blink.c \
-  -I../include -I../wiringX/src \
-  -L../libs/system/musl_riscv64 -lwiringx
+riscv64-plct-linux-gnu-gcc blink.c -o blink \
+    -I../include \
+    -I../wiringX/src \
+    -L../libs/system/musl_riscv64 \
+    -lwiringx
 
 ```
 
@@ -104,14 +112,6 @@ riscv64-unknown-linux-musl-gcc -o blink blink.c \
 ```bash
 
 file blink
-
-```
-
-#### 退出虚拟环境
-
-```bash
-
-ruyi-deactivate
 
 ```
 
@@ -135,7 +135,7 @@ ssh root@192.168.42.1
 
 运行 blink 程序前，需要先禁用系统自带的 LED 闪烁脚本，避免冲突：
 
-```
+```bash
 
 mv /mnt/system/blink.sh /mnt/system/blink.sh_backup && sync
 
@@ -181,7 +181,7 @@ Duo LED GPIO (wiringX) 25: Low
 
 测试完成后，如需恢复系统默认 LED 闪烁：
 
-```
+```bash
 
 ssh root@192.168.42.1
 
