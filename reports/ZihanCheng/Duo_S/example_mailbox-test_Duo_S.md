@@ -1,7 +1,7 @@
 ---
 sys: RuyiSDK
 sys_ver: 0.46.0
-sys_var: Buildroot
+sys_var: Debian  
 provider: milkv
 status: PASS
 last_update: 2026-04-05
@@ -41,8 +41,6 @@ ruyi update
 
 ruyi install gnu-plct llvm-plct
 
-ruyi install gnu-milkv-milkv-duo-musl-bin
-
 ```
 
 ## Mailbox 双核通信测试
@@ -57,9 +55,9 @@ ruyi install gnu-milkv-milkv-duo-musl-bin
 
 #### 操作系统安装与启动验证
 
-确保您的开发板已刷入 RuyiSDK 支持的 Buildroot 系统镜像。
+确保您的开发板已准备好系统。
 
-参考文档：https://milkv.io/zh/docs/duo/getting-started/boot
+参考文档：https://github.com/DuoQilai/riscv-board-custom-dev/blob/main/Duo_S/boot_DuoS.md
 
 ### 2. 获取源码
 
@@ -79,9 +77,17 @@ cd duo-examples
 
 ```bash
 
-ruyi venv -t gnu-milkv-milkv-duo-musl-bin generic ./ruyi_venv
+ruyi venv -t toolchain/gnu-plct manual venv-gnu-plct
 
-source ruyi_venv/bin/ruyi-activate
+. ~/venv-gnu-plct/bin/ruyi-activate
+
+```
+
+#### 验证工具链版本
+
+```bash
+
+riscv64-plct-linux-gnu-gcc -v
 
 ```
 
@@ -91,7 +97,7 @@ source ruyi_venv/bin/ruyi-activate
 
 cd mailbox-test
 
-riscv64-unknown-linux-musl-gcc -o mailbox_test mailbox_test.c
+riscv64-plct-linux-gnu-gcc mailbox_test.c -o mailbox_test
 
 ```
 
@@ -102,14 +108,6 @@ riscv64-unknown-linux-musl-gcc -o mailbox_test mailbox_test.c
 ```bash
 
 file mailbox_test
-
-```
-
-#### 退出虚拟环境
-
-```bash
-
-ruyi-deactivate
 
 ```
 
