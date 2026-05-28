@@ -103,7 +103,7 @@ if (wiringXSetup("milkv_duos", NULL) == -1)
 
 ruyi venv -t toolchain/gnu-plct manual venv-gnu-plct
 
-. ~/venv-gnu-plct/bin/ruyi-activate
+. ~/duo-examples/venv-gnu-plct/bin/ruyi-activate
 
 ```
 
